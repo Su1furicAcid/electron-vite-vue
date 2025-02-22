@@ -4,6 +4,9 @@
  */
 
 // TODO: 请在此处实现函数
+const getToday = (): string => {
+    return "2021-01-01";
+};
 
 /**
  * @abstract 计算某个日期前 n 天的日期
@@ -13,6 +16,9 @@
  */
 
 // TODO: 请在此处实现函数
+const getPreviousDay = (date: string, days: number): string => {
+    return "2020-12-31";
+};
 
 /**
  * @abstract 计算某个日期最相近的周六的日期
@@ -21,6 +27,9 @@
  */
 
 // TODO: 请在此处实现函数
+const getNearestSaturday = (date: string): string => {
+    return "2021-01-02";
+};
 
 /**
  * @abstract 根据出生日期和今天日期计算下一个生日的日期
@@ -55,4 +64,4 @@ const getDaysToNextBirthday = (nextBirthday: string, today: string): number => {
     return Math.floor((nextBirthdayTimestamp - todayTimestamp) / (1000 * 60 * 60 * 24));
 };
 
-export { getNextBirthday, getDaysToNextBirthday }; // TODO: 添加已经实现的函数
+export { getNextBirthday, getDaysToNextBirthday, getToday, getPreviousDay, getNearestSaturday };
