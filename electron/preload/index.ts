@@ -22,6 +22,7 @@ contextBridge.exposeInMainWorld('ipcRenderer', {
 
 contextBridge.exposeInMainWorld('electronAPI', {
   readData(name: string) {
+    console.log('readData', name)
     return ipcRenderer.invoke('readData', name)
   },
   writeData(name: string, data: any) {

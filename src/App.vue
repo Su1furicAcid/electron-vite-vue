@@ -1,8 +1,17 @@
+<template>
+  <div class="container">
+    <BirthdayCard />
+  </div>
+</template>
+
 <script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
 import BirthdayCard from './components/BirthdayCard.vue';
 </script>
 
-<template>
-  <BirthdayCard />
-</template>
+<style scoped>
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+</style>

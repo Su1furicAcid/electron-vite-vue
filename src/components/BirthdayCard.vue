@@ -1,10 +1,3 @@
-<!-- 
-功能:
-1. 展示下次生日日期
-2. 展示下次生日距离今天的天数
-3. 展示距离下次生日前 n 天的日期
-4. 展示下次的计划日期
--->
 <template>
     <div class="container">
         <div>Birthday Card</div>
@@ -24,15 +17,28 @@
 </template>
 
 <script setup>
+import { ref, onMounted } from 'vue'
 import { getNextBirthday, getDaysToNextBirthday } from '../utils/ComputeDay'
-// 获取出生日期
-const birthday = window.electronAPI.readData('birthday') || '2000-01-01'
+
+// 定义响应式变量
+const birthday = ref('1990-01-01')
+const nextBirthday = ref('')
+const daysToNextBirthday = ref(0)
+const N = ref(7)
+const nDaysBeforeNextBirthday = ref('1990-01-01')
+const nextPlan = ref('1990-01-01')
+
 // 获取今天日期
 const today = new Date().toISOString().split('T')[0]
-// 根据出生日期和今天日期计算下次生日的日期
-const nextBirthday = getNextBirthday(birthday, today)
-// 计算距离下次生日的天数
-const daysToNextBirthday = getDaysToNextBirthday(nextBirthday, today)
+
+onMounted(async () => {
+    // 获取出生日期
+    birthday.value = await window.electronAPI.readData('birthday') || '1990-01-01'
+    // 根据出生日期和今天日期计算下次生日的日期
+    nextBirthday.value = getNextBirthday(birthday.value, today)
+    // 计算距离下次生日的天数
+    daysToNextBirthday.value = getDaysToNextBirthday(nextBirthday.value, today)
+})
 </script>
 
 <style scoped>
@@ -40,5 +46,7 @@ const daysToNextBirthday = getDaysToNextBirthday(nextBirthday, today)
     display: flex;
     flex-direction: column;
     gap: 10px;
+    width: 100%;
+    height: 100%;
 }
 </style>

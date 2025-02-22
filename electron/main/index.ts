@@ -123,5 +123,5 @@ import Store from 'electron-store'
 
 const store = new Store()
 
-ipcMain.handle('readData', (_, name: string) => store.get(name))
+ipcMain.handle('readData', (_, name: string) => store.has(name) ? store.get(name) : null)
 ipcMain.handle('writeData', (_, name: string, data: any) => store.set(name, data))

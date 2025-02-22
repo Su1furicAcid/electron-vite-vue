@@ -6,6 +6,7 @@
  */
 
 const getNextBirthday = (birthday: string, today: string): string => {
+    console.log(birthday, today);
     const [, month, day] = birthday.split('-').map(Number);
     const [todayYear, todayMonth, todayDay] = today.split('-').map(Number);
     let nextBirthdayYear = todayYear;
