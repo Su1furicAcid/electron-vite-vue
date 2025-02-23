@@ -38,6 +38,7 @@
   "dependencies": {
     "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
     "@esbuild-plugins/node-modules-polyfill": "^0.2.2",
-    "electron-store": "^8.2.0"
+    "electron-store": "^8.2.0",
+    "lucide-vue-next": "^0.475.0"
   }
 }

@@ -1,25 +1,37 @@
 <template>
-    <div class="container">
-        <div>Birthday Card</div>
-        <div class="next-birthday">
-            <div>下次生日日期: {{ nextBirthday }}</div>
+    <div class="container" :style="{ background: themeConfig.background }">
+        <div class="title" :style="{ color: themeConfig.titleColor }">
+            Birthday Card
         </div>
-        <div class="days-to-next-birthday">
-            <div>距离下次生日还有 {{ daysToNextBirthday }} 天</div>
+
+        <div v-for="(color, index) in themeConfig.cardColors" :key="index" class="card"
+            :style="{ background: color, color: themeConfig.textColor }">
+            <Icon :name="icons[index]" />
+            <div>{{ labels[index] }} <span>{{ values[index] }}</span></div>
         </div>
-        <div class="next-n-days">
-            <div>距离下次生日前 {{ N }} 天的日期: {{ nDaysBeforeNextBirthday }}</div>
-        </div>
-        <div class="next-plan">
-            <div>下次的计划日期: {{ nextPlan }}</div>
+
+        <!-- 主题选择 -->
+        <div class="theme-selector">
+            <button class="theme-button" :class="{ expanded: showThemes }" @click="toggleThemes">
+                🎨 主题
+            </button>
+            <div class="theme-options" :style="{ opacity: showThemes ? 1 : 0 }">
+                <button v-for="(theme, key) in themes" :key="key" :class="{ active: selectedTheme === key }"
+                    :style="{ background: theme.cardColors[1], borderColor: theme.titleColor }"
+                    @click="changeTheme(key)">
+                    {{ themeNames[key] }}
+                </button>
+            </div>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { getNextBirthday, getDaysToNextBirthday, getPreviousDay } from '../utils/ComputeDay'
 import { EventBus } from '../utils/EventBus'
+import Icon from './Icon.vue'
+import { ThemeType, themes, ThemeConfig } from '../utils/Theme'
 
 declare global {
     interface Window {
@@ -29,6 +41,20 @@ declare global {
         };
     }
 }
+
+const icons = ['Calendar', 'Clock', 'CalendarCheck', 'Flag'];
+const labels = ['下次生日日期:', '距离下次生日还有', '距离下次生日前 N 天的日期:', '下次的计划日期:'];
+const values = computed(() => [nextBirthday.value, daysToNextBirthday.value + ' 天', nDaysBeforeNextBirthday.value, nextPlan.value]);
+const selectedTheme = ref<ThemeType>('energetic');
+const themeConfig = computed(() => themes[selectedTheme.value]);
+const themeNames: Record<ThemeType, string> = {
+    elegant: "淡雅",
+    energetic: "活力",
+    calm: "冷静"
+};
+const showThemes = ref(false);
+const changeTheme = (theme: ThemeType) => selectedTheme.value = theme;
+const toggleThemes = () => showThemes.value = !showThemes.value;
 
 // 定义响应式变量
 const birthday = ref<string>('1990-01-01')
@@ -64,11 +90,121 @@ onMounted(async () => {
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
 .container {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    max-width: 450px;
+    margin: 40px auto;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    font-family: 'Poppins', sans-serif;
+    color: #2c3e50;
+    position: relative;
+    overflow: hidden;
+}
+
+.title {
+    font-size: 26px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
     gap: 10px;
+    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.icon {
+    width: 28px;
+    height: 28px;
+    vertical-align: middle;
+}
+
+.card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
     width: 100%;
-    height: 100%;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+    font-weight: 600;
+}
+
+.card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* 主题选择按钮 */
+.theme-selector {
+    position: relative;
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+}
+
+/* 主题按钮 */
+.theme-button {
+    width: 90px;
+    height: 40px;
+    border-radius: 8px;
+    border: none;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position: relative;
+    z-index: 2;
+}
+
+/* 主题按钮展开动画 */
+.theme-button.expanded {
+    transform: translateX(-120px);
+}
+
+/* 主题选项 */
+.theme-options {
+    width: 180px;
+    height: 35px;
+    font-size: 12px;
+    font-weight: bold;
+    display: flex;
+    gap: 10px;
+    padding: 10px;
+    position: absolute;
+    left: 20px;
+    top: -5px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: opacity 0.3s ease-in-out;
+}
+
+/* 主题选项按钮 */
+.theme-options button {
+    width: 80px;
+    height: 35px;
+    border-radius: 15px;
+    border: none;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out, background 0.3s ease-in-out;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background: linear-gradient(45deg, #ff6a00, #ee0979);
+    color: white;
+}
+
+.theme-options button:hover {
+    transform: scale(1.1);
+    background: linear-gradient(45deg, #ee0979, #ff6a00);
 }
 </style>
