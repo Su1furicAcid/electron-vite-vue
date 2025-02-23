@@ -1,16 +1,16 @@
 <template>
     <div class="container">
-        <div>Edit Info</div>
+        <div class="title">Edit Info</div>
         <div class="edit-birthday">
-            <div>出生日期: <input type="date" v-model="userBirthday" /></div>
+            <div>出生日期: <input type="date" v-model="userBirthday" class="input" /></div>
         </div>
         <div class="edit-n">
-            <div>这次聚会计划在 <input type="number" v-model="N" /> 天前提醒</div>
+            <div>这次聚会计划在 <input type="number" v-model="N" class="input short-input" /> 天前提醒</div>
         </div>
         <div class="edit-plan">
             <div>聚会计划日期: {{ nextPlan }}</div>
         </div>
-        <button @click="confirmPlanDate">确认计划日期</button>
+        <button @click="confirmPlanDate" class="button">确认计划日期</button>
     </div>
 </template>
 
@@ -89,11 +89,71 @@ const confirmPlanDate = () => {
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
 .container {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    max-width: 450px;
+    margin: 40px auto;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    font-family: 'Poppins', sans-serif;
+    color: #2c3e50;
+    position: relative;
+    overflow: hidden;
+}
+
+.title {
+    font-size: 26px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
     gap: 10px;
+    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.input {
     width: 100%;
-    height: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    font-family: 'Poppins', sans-serif;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: border-color 0.3s ease-in-out;
+}
+
+.input:focus {
+    border-color: #2575fc;
+    outline: none;
+}
+
+.short-input {
+    width: 60px;
+}
+
+.button {
+    width: 150px;
+    height: 40px;
+    border-radius: 20px;
+    border: none;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out, background 0.3s ease-in-out;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background: linear-gradient(45deg, #6a11cb, #2575fc);
+    color: white;
+}
+
+.button:hover {
+    transform: scale(1.1);
+    background: linear-gradient(45deg, #2575fc, #6a11cb);
 }
 </style>
