@@ -13,7 +13,7 @@
     "skipLibCheck": true,
     "noEmit": true
   },
-  "include": ["src"],
+  "include": [],
   "references": [
     { "path": "./tsconfig.node.json" }
   ]
