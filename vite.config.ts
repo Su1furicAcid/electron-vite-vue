@@ -3,6 +3,8 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import electron from 'vite-plugin-electron/simple'
 import pkg from './package.json'
+import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill'
+import { NodeModulesPolyfillPlugin } from '@esbuild-plugins/node-modules-polyfill'
 
 // https://vitejs.dev/config/
 export default defineConfig(({ command }) => {
@@ -62,6 +64,29 @@ export default defineConfig(({ command }) => {
         renderer: {},
       }),
     ],
+    optimizeDeps: {
+      esbuildOptions: {
+        // Node.js global to browser globalThis
+        define: {
+          global: 'globalThis'
+        },
+        // Enable esbuild polyfill plugins
+        plugins: [
+          NodeGlobalsPolyfillPlugin({
+            process: true,
+            buffer: true
+          }),
+          NodeModulesPolyfillPlugin()
+        ]
+      }
+    },
+    resolve: {
+      alias: {
+        // This Rollup alias is used to make sure that the Node.js built-in modules
+        // are resolved to the polyfill versions
+        events: 'rollup-plugin-node-polyfills/polyfills/events'
+      }
+    },
     server: process.env.VSCODE_DEBUG && (() => {
       const url = new URL(pkg.debug.env.VITE_DEV_SERVER_URL)
       return {

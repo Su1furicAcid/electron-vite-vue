@@ -2,13 +2,6 @@
  * @abstract 获取今天的日期
  * @returns {string} today e.g. '2021-01-01'
  */
-
-// TODO: 请在此处实现函数
-const getTodayInput = (date: string): string => {
-    console.log(date);
-    const [year, month, day] = date.split('-').map(Number);
-    return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-};
 const getToday = ():string => {
     const today = new Date();
     const year = today.getFullYear();
@@ -23,8 +16,6 @@ const getToday = ():string => {
  * @param {number} days e.g. 1
  * @returns {string} date e.g. '2020-12-31'
  */
-
-// TODO: 请在此处实现函数
 const getPreviousDay = (date: string, days: number): string => {
     const inputDate = new Date(date);
     // 使用 setDate 方法调整日期，减去指定的天数
@@ -40,8 +31,6 @@ const getPreviousDay = (date: string, days: number): string => {
  * @param {string} date e.g. '2021-01-01'
  * @returns {string} date e.g. '2021-01-02'
  */
-
-// TODO: 请在此处实现函数
 const getNearestSaturday = (date: string): string => {
     const inputDate = new Date(date);
     // 获取星期几（0表示周日）
@@ -59,7 +48,7 @@ const getNearestSaturday = (date: string): string => {
     } else {
         // 周六或周日
         daysToSaturday = 0;
-        }
+    }
 
     // 调整日期，获取最近的周六
     inputDate.setDate(inputDate.getDate() + daysToSaturday);
@@ -78,7 +67,6 @@ const getNearestSaturday = (date: string): string => {
  * @param {string} today e.g. '2021-01-01'
  * @returns {string} nextBirthday e.g. '2022-01-01'
  */
-
 const getNextBirthday = (birthday: string, today: string): string => {
     console.log(birthday, today);
     const [, month, day] = birthday.split('-').map(Number);
@@ -98,7 +86,6 @@ const getNextBirthday = (birthday: string, today: string): string => {
  * @param {string} today e.g. '2021-01-01'
  * @returns {number} days e.g. 365
  */
-
 const getDaysToNextBirthday = (nextBirthday: string, today: string): number => {
     const nextBirthdayTimestamp = new Date(nextBirthday).getTime();
     const todayTimestamp = new Date(today).getTime();

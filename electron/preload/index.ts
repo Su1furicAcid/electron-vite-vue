@@ -1,4 +1,5 @@
 import { ipcRenderer, contextBridge } from 'electron'
+import { EventBus } from '../../src/utils/EventBus'
 
 // --------- Expose some API to the Renderer process ---------
 contextBridge.exposeInMainWorld('ipcRenderer', {
@@ -27,6 +28,9 @@ contextBridge.exposeInMainWorld('electronAPI', {
   },
   writeData(name: string, data: any) {
     return ipcRenderer.invoke('writeData', name, data)
+  },
+  onDataUpdated(callback: (event: Electron.IpcRendererEvent, ...args: any[]) => void) {
+    EventBus.on('dataUpdated', callback);
   }
 })
 

@@ -2,10 +2,10 @@
     <div class="container">
         <div>Edit Info</div>
         <div class="edit-birthday">
-            <div>生日: <input type="date" v-model="userBirthday" /></div>
+            <div>出生日期: <input type="date" v-model="userBirthday" /></div>
         </div>
         <div class="edit-n">
-            <div>计划在 <input type="number" v-model="N" /> 天前提醒</div>
+            <div>这次聚会计划在 <input type="number" v-model="N" /> 天前提醒</div>
         </div>
         <div class="edit-plan">
             <div>聚会计划日期: {{ nextPlan }}</div>
@@ -16,17 +16,18 @@
 
 <script setup lang="ts">
 import { ref, onMounted, watch, Ref } from 'vue'
+import debounce from '../utils/Debounce';
+import { getToday, getPreviousDay, getNearestSaturday, getNextBirthday } from '../utils/ComputeDay';
+import { EventBus } from '../utils/EventBus';
 
 declare global {
     interface Window {
         electronAPI: {
             readData: (key: string) => Promise<string | null>;
-            saveData: (key: string, value: string | number) => Promise<void>;
+            writeData: (key: string, value: string | number) => Promise<void>;
         };
     }
 }
-
-import { getToday, getPreviousDay, getNearestSaturday } from '../utils/ComputeDay';
 
 const today = getToday()
 const userBirthday = ref('1990-01-01')
@@ -39,18 +40,24 @@ onMounted(async () => {
     updateNextPlan()
 })
 
-watch(userBirthday, async (newValue) => {
-    await window.electronAPI.saveData('birthday', newValue)
+const saveDataDebounced = debounce(async (key: string, value: string | number) => {
+    await window.electronAPI.writeData(key, value)
+    EventBus.emit('dataUpdated', { key, value });
+}, 300)
+
+watch(userBirthday, (newValue) => {
+    saveDataDebounced('birthday', newValue)
     updateNextPlan()
 })
 
-watch(N, async (newValue) => {
-    await window.electronAPI.saveData('N', newValue)
+watch(N, (newValue) => {
+    saveDataDebounced('N', newValue)
     updateNextPlan()
 })
 
 const updateNextPlan = () => {
-    const nDaysBefore = getPreviousDay(userBirthday.value, Number(N.value))
+    const nextBirthday = getNextBirthday(userBirthday.value, today)
+    const nDaysBefore = getPreviousDay(nextBirthday, Number(N.value))
     const dayOfWeek = new Date(nDaysBefore).getDay()
 
     if (dayOfWeek >= 1 && dayOfWeek <= 5) {
@@ -61,7 +68,8 @@ const updateNextPlan = () => {
 }
 
 const confirmPlanDate = () => {
-    const nDaysBefore = getPreviousDay(userBirthday.value, Number(N.value))
+    const nextBirthday = getNextBirthday(userBirthday.value, today)
+    const nDaysBefore = getPreviousDay(nextBirthday, Number(N.value))
     const dayOfWeek = new Date(nDaysBefore).getDay()
 
     if (dayOfWeek >= 1 && dayOfWeek <= 5) {
@@ -76,6 +84,7 @@ const confirmPlanDate = () => {
         nextPlan.value = nDaysBefore
     }
     alert(`计划日期: ${nextPlan.value}`)
+    saveDataDebounced('nextPlan', nextPlan.value)
 }
 </script>
 
