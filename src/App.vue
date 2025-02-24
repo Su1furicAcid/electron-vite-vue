@@ -1,6 +1,7 @@
 <template>
   <div class="container">
-    <div class="card-container" :class="{ flipped: isFlipped }">
+    <div class="card-container" :class="{ flipped: isFlipped }" @mousedown="startDrag" @mousemove="onDrag"
+      @mouseup="endDrag">
       <div class="card-front">
         <div class="title-bar">
           <div class="window-controls">
@@ -9,7 +10,6 @@
           </div>
         </div>
         <BirthdayCard />
-        <button @click="flipCard" class="button">进入设置</button>
       </div>
       <div class="card-back">
         <div class="title-bar">
@@ -19,7 +19,6 @@
           </div>
         </div>
         <EditInfo />
-        <button @click="flipCard" class="button">返回</button>
       </div>
     </div>
   </div>
@@ -42,11 +41,30 @@ declare global {
     };
   }
 }
-const isFlipped = ref(false);
 
-const flipCard = () => {
-  isFlipped.value = !isFlipped.value;
-  document.body.style.overflow = 'hidden';
+const isFlipped = ref(false);
+const startX = ref(0);
+const isDragging = ref(false);
+
+const startDrag = (event: MouseEvent) => {
+  startX.value = event.clientX;
+  isDragging.value = true;
+};
+
+const onDrag = (event: MouseEvent) => {
+  if (!isDragging.value) return;
+  const deltaX = event.clientX - startX.value;
+  if (deltaX > 100) {
+    isFlipped.value = false;
+    isDragging.value = false;
+  } else if (deltaX < -100) {
+    isFlipped.value = true;
+    isDragging.value = false;
+  }
+};
+
+const endDrag = () => {
+  isDragging.value = false;
 };
 
 const minimizeWindow = () => {
