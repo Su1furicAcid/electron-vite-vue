@@ -1,6 +1,10 @@
 <template>
     <div class="container">
         <div class="title">Edit Info</div>
+        <!--添加今日日期的选择 dateToday-->>
+        <div class="edit-today">
+            <div>今日日期: <input type="date" v-model="dateToday" class="input" /></div>
+        </div>
         <div class="edit-birthday">
             <div>出生日期: <input type="date" v-model="userBirthday" class="input" /></div>
         </div>
@@ -19,14 +23,17 @@ import { ref, onMounted, watch, Ref } from 'vue';
 import debounce from '../utils/Debounce';
 import { getToday, getPreviousDay, getNearestSaturday, getNextBirthday } from '../utils/ComputeDay';
 
-const today = getToday();
+const dateToday = ref(getToday());
 const userBirthday = ref('1990-01-01');
 const N: Ref<string> = ref("7");
 let nextPlan = ref('1990-01-01');
+//保存今日日期
+//const today = ref(dateToday);
 
 onMounted(async () => {
     userBirthday.value = await window.electronAPI.readData('birthday') || '1990-01-01';
     N.value = await window.electronAPI.readData('N') || "7";
+    dateToday.value =await window.electronAPI.readData('dateToday') || getToday();
     updateNextPlan();
 });
 
@@ -45,8 +52,15 @@ watch(N, (newValue) => {
     updateNextPlan();
 });
 
+//监听今日日期的变化
+watch(dateToday, (newValue) => {
+    saveDataDebounced('dateToday', newValue);
+    updateNextPlan();
+});
+
+//修改算法中使用的日期
 const updateNextPlan = () => {
-    const nextBirthday = getNextBirthday(userBirthday.value, today);
+    const nextBirthday = getNextBirthday(userBirthday.value, dateToday.value);
     const nDaysBefore = getPreviousDay(nextBirthday, Number(N.value));
     const dayOfWeek = new Date(nDaysBefore).getDay();
 
@@ -58,7 +72,7 @@ const updateNextPlan = () => {
 };
 
 const confirmPlanDate = () => {
-    const nextBirthday = getNextBirthday(userBirthday.value, today);
+    const nextBirthday = getNextBirthday(userBirthday.value, dateToday.value);
     const nDaysBefore = getPreviousDay(nextBirthday, Number(N.value));
     const dayOfWeek = new Date(nDaysBefore).getDay();
 
