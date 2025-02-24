@@ -32,13 +32,16 @@ const indexHtml = path.join(RENDERER_DIST, 'index.html')
 
 async function createWindow() {
   win = new BrowserWindow({
-    width: 400, // 设置窗口宽度
-    height: 800, // 设置窗口高度
+    show: false, // 先隐藏窗口，等待加载完成后再显示
+    width: 509, // 设置窗口宽度
+    height: 456, // 设置窗口高度
     transparent: true, // 使窗口透明
     frame: false, // 无边框窗口
     webPreferences: {
       preload,
+      devTools: false
     },
+    resizable: false // 禁止窗口大小调整
   })
 
   if (VITE_DEV_SERVER_URL) {
@@ -49,6 +52,7 @@ async function createWindow() {
   }
 
   win.webContents.on('did-finish-load', () => {
+    win?.show()
     win?.webContents.send('main-process-message', new Date().toLocaleString())
   })
 
@@ -57,6 +61,8 @@ async function createWindow() {
     return { action: 'deny' }
   })
 }
+
+app.disableHardwareAcceleration()
 
 app.whenReady().then(createWindow)
 
@@ -89,6 +95,8 @@ ipcMain.handle('open-win', (_, arg) => {
       contextIsolation: false,
     },
     frame: false, // 无边框窗口
+    resizable: false, // 禁止窗口大小调整
+    transparent: true // 使窗口透明
   })
 
   if (VITE_DEV_SERVER_URL) {

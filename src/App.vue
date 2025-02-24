@@ -4,8 +4,9 @@
       @mouseup="endDrag">
       <div class="card-front">
         <div class="title-bar">
+          <div class="title">生日聚会便签</div>
           <div class="window-controls">
-            <button @click="minimizeWindow">—</button>
+            <button @click="minimizeWindow">-</button>
             <button @click="closeWindow">×</button>
           </div>
         </div>
@@ -14,8 +15,6 @@
       <div class="card-back">
         <div class="title-bar">
           <div class="window-controls">
-            <button @click="minimizeWindow">—</button>
-            <button @click="closeWindow">×</button>
           </div>
         </div>
         <EditInfo />
@@ -82,50 +81,61 @@ const closeWindow = () => {
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  height: 50vh;
+  height: 100%;
+  width: 100%;
   position: relative;
-  top: -14vh;
+  top: -43px;
+  left: -39px;
 }
 
 .title-bar {
   display: flex;
-  justify-content: flex-end;
+  justify-content:space-between;
   align-items: center;
   width: 100%;
   height: 10px;
   color: white;
   -webkit-app-region: drag;
   position: relative;
-  top: -6vh;
-  left: -45px;
+  top: 22px;
+  left: -87px;
   z-index: 100;
+}
+
+.title-bar .title {
+  font-size: 16px;
+  font-weight: 600;
+  margin-left: 10px;
+  position: relative;
+  left: 100px;
 }
 
 .title-bar .window-controls {
   display: flex;
   gap: 10px;
   padding-right: 10px;
+  z-index: 200;
 }
 
 .title-bar .window-controls button {
-  background: linear-gradient(45deg, #6a11cb, #2575fc);
   border: none;
-  color: white;
+  color: black;
+  font-weight: bolder;
   cursor: pointer;
   -webkit-app-region: no-drag;
   width: 30px;
-  height: 30px;
+  height: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
   border-radius: 10px;
   transition: transform 0.3s ease-in-out, background 0.3s ease-in-out;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  pointer-events: auto;
 }
 
 .title-bar .window-controls button:hover {
   transform: scale(1.1);
-  background: linear-gradient(45deg, #2575fc, #6a11cb);
 }
 
 .card-container {
@@ -160,26 +170,5 @@ const closeWindow = () => {
 
 .card-container.flipped .card-back {
   transform: rotateY(0deg);
-}
-
-.button {
-  width: 150px;
-  height: 40px;
-  border-radius: 20px;
-  border: none;
-  font-size: 14px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: transform 0.3s ease-in-out, background 0.3s ease-in-out;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  background: linear-gradient(45deg, #6a11cb, #2575fc);
-  color: white;
-  position: relative;
-  top: -18vh;
-}
-
-.button:hover {
-  transform: scale(1.1);
-  background: linear-gradient(45deg, #2575fc, #6a11cb);
 }
 </style>

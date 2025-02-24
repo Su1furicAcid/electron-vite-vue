@@ -108,6 +108,8 @@ onMounted(async () => {
     align-items: center;
     gap: 10px;
     text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+    position: relative;
+    top: 15px;
 }
 
 .icon {
@@ -136,7 +138,7 @@ onMounted(async () => {
 /* 主题选择按钮 */
 .theme-selector {
     position: relative;
-    margin-top: 20px;
+    margin-top: 5px;
     display: flex;
     align-items: center;
 }
