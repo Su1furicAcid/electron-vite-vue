@@ -1,17 +1,23 @@
 <template>
   <div class="container">
-    <div class="title-bar">
-      <div class="window-controls">
-        <button @click="minimizeWindow">—</button>
-        <button @click="closeWindow">×</button>
-      </div>
-    </div>
     <div class="card-container" :class="{ flipped: isFlipped }">
       <div class="card-front">
+        <div class="title-bar">
+          <div class="window-controls">
+            <button @click="minimizeWindow">—</button>
+            <button @click="closeWindow">×</button>
+          </div>
+        </div>
         <BirthdayCard />
         <button @click="flipCard" class="button">进入设置</button>
       </div>
       <div class="card-back">
+        <div class="title-bar">
+          <div class="window-controls">
+            <button @click="minimizeWindow">—</button>
+            <button @click="closeWindow">×</button>
+          </div>
+        </div>
         <EditInfo />
         <button @click="flipCard" class="button">返回</button>
       </div>
@@ -60,6 +66,7 @@ const closeWindow = () => {
   align-items: center;
   height: 50vh;
   position: relative;
+  top: -14vh;
 }
 
 .title-bar {
@@ -70,6 +77,10 @@ const closeWindow = () => {
   height: 10px;
   color: white;
   -webkit-app-region: drag;
+  position: relative;
+  top: -6vh;
+  left: -45px;
+  z-index: 100;
 }
 
 .title-bar .window-controls {
@@ -89,7 +100,7 @@ const closeWindow = () => {
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 5px;
+  border-radius: 10px;
   transition: transform 0.3s ease-in-out, background 0.3s ease-in-out;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -145,6 +156,8 @@ const closeWindow = () => {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   background: linear-gradient(45deg, #6a11cb, #2575fc);
   color: white;
+  position: relative;
+  top: -18vh;
 }
 
 .button:hover {
