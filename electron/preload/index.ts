@@ -1,4 +1,5 @@
 import { ipcRenderer, contextBridge } from 'electron'
+import { Minimize } from 'lucide-vue-next'
 
 // --------- Expose some API to the Renderer process ---------
 contextBridge.exposeInMainWorld('ipcRenderer', {
@@ -33,6 +34,12 @@ contextBridge.exposeInMainWorld('electronAPI', {
   },
   onDataReceived(callback: (data: any) => void) {
     ipcRenderer.on('receive-data', (event, data) => callback(data))
+  },
+  minimizeWindow() {
+    ipcRenderer.send('minimize-window')
+  },
+  closeWindow() {
+    ipcRenderer.send('close-window')
   }
 })
 

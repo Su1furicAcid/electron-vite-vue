@@ -32,8 +32,10 @@ const indexHtml = path.join(RENDERER_DIST, 'index.html')
 
 async function createWindow() {
   win = new BrowserWindow({
-    title: 'Main window',
-    icon: path.join(process.env.VITE_PUBLIC, 'favicon.ico'),
+    width: 400, // 设置窗口宽度
+    height: 800, // 设置窗口高度
+    transparent: true, // 使窗口透明
+    frame: false, // 无边框窗口
     webPreferences: {
       preload,
     },
@@ -86,6 +88,7 @@ ipcMain.handle('open-win', (_, arg) => {
       nodeIntegration: true,
       contextIsolation: false,
     },
+    frame: false, // 无边框窗口
   })
 
   if (VITE_DEV_SERVER_URL) {
@@ -105,4 +108,12 @@ ipcMain.handle('writeData', (_, name: string, data: any) => store.set(name, data
 // 新增的 IPC 通道，用于组件之间的通信
 ipcMain.on('send-data', (event, data) => {
   win?.webContents.send('receive-data', data)
+})
+
+ipcMain.on('minimize-window', () => {
+  win?.minimize()
+})
+
+ipcMain.on('close-window', () => {
+  win?.close()
 })

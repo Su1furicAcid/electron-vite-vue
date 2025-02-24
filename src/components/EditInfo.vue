@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <div class="title">Edit Info</div>
-        <!--添加今日日期的选择 dateToday-->>
+        <!--添加今日日期的选择 dateToday-->
         <div class="edit-today">
             <div>今日日期: <input type="date" v-model="dateToday" class="input" /></div>
         </div>

@@ -18,9 +18,9 @@ export const themes: Record<ThemeType, ThemeConfig> = {
     },
     // 活力风格
     energetic: {
-        background: "linear-gradient(135deg, #FF9A9E, #FAD0C4)",
+        background: "linear-gradient(135deg, #FF6F61, #FFB88C)",
         titleColor: "#ffffff",
-        cardColors: ["#007BFF", "#9b51e0", "#ff7e5f", "#56ab2f"],
+        cardColors: ["#FF6F61", "#FFB88C", "#FFD700", "#FF4500"],
         textColor: "#fff",
     },
     // 冷静风格

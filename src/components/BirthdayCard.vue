@@ -1,10 +1,11 @@
 <template>
     <div class="container" :style="{ background: themeConfig.background }">
-        <div class="title" :style="{ color: themeConfig.titleColor }">
-            Birthday Card
+        <!-- 添加今日日期的展示 -->
+        <div class="today-date" :style="{ color: themeConfig.titleColor } ">
+            今日日期: {{ dateToday }}
         </div>
 
-        <div v-for="(color, index) in themeConfig.cardColors" :key="index" class="card"
+        <div v-for=" (color, index) in themeConfig.cardColors" :key="index" class="card"
             :style="{ background: color, color: themeConfig.textColor }">
             <Icon :name="icons[index]" />
             <div>{{ labels[index] }} <span>{{ values[index] }}</span></div>
@@ -28,17 +29,6 @@
 
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue';
-
-declare global {
-    interface Window {
-        electronAPI: {
-            readData: (key: string) => Promise<string>;
-            onDataReceived: (callback: () => void) => void;
-            writeData: (key: string, value: string) => Promise<void>;
-            sendData: (data: Record<string, string>) => void;
-        };
-    }
-}
 import { getNextBirthday, getDaysToNextBirthday, getPreviousDay, getToday } from '../utils/ComputeDay';
 import Icon from './Icon.vue';
 import { ThemeType, themes, ThemeConfig } from '../utils/Theme';
@@ -66,11 +56,10 @@ const nDaysBeforeNextBirthday = ref<string>('1990-01-01');
 const nextPlan = ref<string>('1990-01-01');
 // 获取今天日期
 const dateToday = ref(getToday());
-// const today: string = new Date().toISOString().split('T')[0];
 
 const fetchData = async () => {
     // 获取出生日期
-    dateToday.value =await window.electronAPI.readData('dateToday') || getToday();
+    dateToday.value = await window.electronAPI.readData('dateToday') || getToday();
 
     birthday.value = await window.electronAPI.readData('birthday') || '1990-01-01';
     // 根据出生日期和今天日期计算下次生日的日期
@@ -110,7 +99,7 @@ onMounted(async () => {
     overflow: hidden;
 }
 
-.title {
+.today-date {
     font-size: 26px;
     font-weight: 700;
     text-align: center;
