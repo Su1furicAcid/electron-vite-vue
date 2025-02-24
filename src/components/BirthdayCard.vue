@@ -39,13 +39,13 @@ declare global {
         };
     }
 }
-import { getNextBirthday, getDaysToNextBirthday, getPreviousDay } from '../utils/ComputeDay';
+import { getNextBirthday, getDaysToNextBirthday, getPreviousDay, getToday } from '../utils/ComputeDay';
 import Icon from './Icon.vue';
 import { ThemeType, themes, ThemeConfig } from '../utils/Theme';
 
 const icons = ['Calendar', 'Clock', 'CalendarCheck', 'Flag'];
-const labels = ['下次生日日期:', '距离下次生日还有', '距离下次生日前 N 天的日期:', '下次的计划日期:'];
-const values = computed(() => [nextBirthday.value, daysToNextBirthday.value + ' 天', nDaysBeforeNextBirthday.value, nextPlan.value]);
+const labels = ['下次生日日期:', '距离下次生日还有', '距离下次生日前 ', '下次的计划日期:'];
+const values = computed(() => [nextBirthday.value, daysToNextBirthday.value + ' 天', N.value + " 天的日期:" + nDaysBeforeNextBirthday.value, nextPlan.value]);
 const selectedTheme = ref<ThemeType>('energetic');
 const themeConfig = computed(() => themes[selectedTheme.value]);
 const themeNames: Record<ThemeType, string> = {
@@ -64,17 +64,19 @@ const daysToNextBirthday = ref<number>(0);
 const N = ref<string>('7');
 const nDaysBeforeNextBirthday = ref<string>('1990-01-01');
 const nextPlan = ref<string>('1990-01-01');
-
 // 获取今天日期
-const today: string = new Date().toISOString().split('T')[0];
+const dateToday = ref(getToday());
+// const today: string = new Date().toISOString().split('T')[0];
 
 const fetchData = async () => {
     // 获取出生日期
+    dateToday.value =await window.electronAPI.readData('dateToday') || getToday();
+
     birthday.value = await window.electronAPI.readData('birthday') || '1990-01-01';
     // 根据出生日期和今天日期计算下次生日的日期
-    nextBirthday.value = getNextBirthday(birthday.value, today);
+    nextBirthday.value = getNextBirthday(birthday.value, dateToday.value);
     // 计算距离下次生日的天数
-    daysToNextBirthday.value = getDaysToNextBirthday(nextBirthday.value, today);
+    daysToNextBirthday.value = getDaysToNextBirthday(nextBirthday.value, dateToday.value);
     // 获取 N 的值
     N.value = await window.electronAPI.readData('N') || '7';
     // 计算距离下次生日前 N 天的日期
