@@ -2,7 +2,7 @@
     <div class="container" :style="{ background: themeConfig.background }">
         <!-- 添加今日日期的展示 -->
         <div class="today-date" :style="{ color: themeConfig.titleColor } ">
-            今日日期: {{ dateToday }}
+            当前是 {{ dateToday }}
         </div>
 
         <div v-for=" (color, index) in themeConfig.cardColors" :key="index" class="card"

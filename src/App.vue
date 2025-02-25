@@ -1,6 +1,10 @@
 <template>
   <div class="container">
-    <div class="card-container" :class="{ flipped: isFlipped }" @mousedown="startDrag" @mousemove="onDrag"
+    <div v-if="showIntro" class="intro-screen">
+      <h1>欢迎来到生日聚会便签</h1>
+      <button @click="continueToApp">继续</button>
+    </div>
+    <div v-else class="card-container" :class="{ flipped: isFlipped }" @mousedown="startDrag" @mousemove="onDrag"
       @mouseup="endDrag">
       <div class="card-front">
         <div class="title-bar">
@@ -11,6 +15,10 @@
           </div>
         </div>
         <BirthdayCard />
+        <div class="drag-guide" v-if="showDragGuide">
+          <Icon :name="arrowLeft" />  
+          向左拖动鼠标进入设置
+        </div>
       </div>
       <div class="card-back">
         <div class="title-bar">
@@ -27,6 +35,9 @@
 import { ref } from 'vue';
 import BirthdayCard from './components/BirthdayCard.vue';
 import EditInfo from './components/EditInfo.vue';
+import Icon from './components/Icon.vue';
+
+const arrowLeft = 'ArrowLeft';
 
 declare global {
   interface Window {
@@ -41,9 +52,15 @@ declare global {
   }
 }
 
+const showIntro = ref(true);
 const isFlipped = ref(false);
 const startX = ref(0);
 const isDragging = ref(false);
+const showDragGuide = ref(true);
+
+const continueToApp = () => {
+  showIntro.value = false;
+};
 
 const startDrag = (event: MouseEvent) => {
   startX.value = event.clientX;
@@ -56,6 +73,7 @@ const onDrag = (event: MouseEvent) => {
   if (deltaX > 100) {
     isFlipped.value = false;
     isDragging.value = false;
+    showDragGuide.value = false;
   } else if (deltaX < -100) {
     isFlipped.value = true;
     isDragging.value = false;
@@ -88,9 +106,47 @@ const closeWindow = () => {
   left: -39px;
 }
 
+.intro-screen {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 456px;
+  width: 509px;
+  background-color: #ffffff;
+  color: #333;
+  text-align: center;
+  border-radius: 10px;
+  position: absolute;
+  top: -180px;
+  left: -220px;
+}
+
+.intro-screen h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.intro-screen button {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  background: linear-gradient(45deg, #6a11cb, #2575fc);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  transition: linear 0.3s;
+}
+
+.intro-screen button:hover {
+  background: linear-gradient(45deg, #6a11cb, #2575fc);
+  transform: scale(1.1);
+}
+
 .title-bar {
   display: flex;
-  justify-content:space-between;
+  justify-content: space-between;
   align-items: center;
   width: 100%;
   height: 10px;
@@ -141,7 +197,7 @@ const closeWindow = () => {
 .card-container {
   perspective: 1000px;
   width: 600px;
-  height: 400px;
+  height: 420px;
   position: relative;
 }
 
@@ -170,5 +226,32 @@ const closeWindow = () => {
 
 .card-container.flipped .card-back {
   transform: rotateY(0deg);
+}
+
+.drag-guide {
+  position: absolute;
+  bottom: -60px;
+  left: -34px;
+  width: 100%;
+  text-align: center;
+  font-size: 14px;
+  color: white;
+  animation: blink 1s infinite;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+@keyframes blink {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
 }
 </style>

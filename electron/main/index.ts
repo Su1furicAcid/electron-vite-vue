@@ -34,7 +34,7 @@ async function createWindow() {
   win = new BrowserWindow({
     show: false, // 先隐藏窗口，等待加载完成后再显示
     width: 509, // 设置窗口宽度
-    height: 456, // 设置窗口高度
+    height: 476, // 设置窗口高度
     transparent: true, // 使窗口透明
     frame: false, // 无边框窗口
     webPreferences: {

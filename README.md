@@ -1,79 +1,60 @@
-# electron-vite-vue
+# 生日聚会计划便签
 
-🥳 Really simple `Electron` + `Vue` + `Vite` boilerplate.
+## 项目介绍
 
-<!-- [![awesome-vite](https://awesome.re/mentioned-badge.svg)](https://github.com/vitejs/awesome-vite) -->
-<!-- [![Netlify Status](https://api.netlify.com/api/v1/badges/ae3863e3-1aec-4eb1-8f9f-1890af56929d/deploy-status)](https://app.netlify.com/sites/electron-vite/deploys) -->
-<!-- [![GitHub license](https://img.shields.io/github/license/caoxiemeihao/electron-vite-vue)](https://github.com/electron-vite/electron-vite-vue/blob/main/LICENSE) -->
-<!-- [![GitHub stars](https://img.shields.io/github/stars/caoxiemeihao/electron-vite-vue?color=fa6470)](https://github.com/electron-vite/electron-vite-vue) -->
-<!-- [![GitHub forks](https://img.shields.io/github/forks/caoxiemeihao/electron-vite-vue)](https://github.com/electron-vite/electron-vite-vue) -->
-[![GitHub Build](https://github.com/electron-vite/electron-vite-vue/actions/workflows/build.yml/badge.svg)](https://github.com/electron-vite/electron-vite-vue/actions/workflows/build.yml)
-[![GitHub Discord](https://img.shields.io/badge/chat-discord-blue?logo=discord)](https://discord.gg/sRqjYpEAUK)
+生日聚会计划便签是一款基于 Electron + Vite + Vue3 开发的 Windows 桌面应用，辅助用户记录生日聚会计划，并提醒用户进行计划。项目使用 electron-vite-vue 模板进行开发。
 
-## Features
+### 支持平台
 
-📦 Out of the box  
-🎯 Based on the official [template-vue-ts](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-vue-ts), less invasive  
-🌱 Extensible, really simple directory structure  
-💪 Support using Node.js API in Electron-Renderer  
-🔩 Support C/C++ native addons  
-🖥 It's easy to implement multiple windows  
+- Windows
 
-## Quick Setup
+### 功能特性
 
+1. 计算生日倒计时
+2. 调整计划时间
+3. 计划提醒
+
+### 功能描述
+
+1. 欢迎界面：程序启动时显示欢迎界面，用户按任意键继续。
+2. 输入日期：提示用户输入出生日期和今天的日期，计算并显示距离下次生日的天数。
+3. 制定计划日期：显示下次生日日期和距离今天的天数，提示用户输入希望提前多少天做聚会计划。根据用户输入的天数，计算并显示计划日期。如果计划日期是工作日，则调整为最近的一个周六。
+4. 结果显示：显示生日聚会计划的制定日期信息，包括下次生日日期、距离下次生日的天数、计划日期等。
+5. 提醒功能：在计划日期当天，弹出提醒窗口，提醒用户制定生日聚会计划。
+
+## 快速上手
+
+### 本地编译
 ```sh
-# clone the project
+# 把项目克隆到本地
 git clone https://github.com/electron-vite/electron-vite-vue.git
 
-# enter the project directory
-cd electron-vite-vue
-
-# install dependency
+# 安装依赖
 npm install
 
-# develop
+# 在开发模式下运行
 npm run dev
+
+# 编译后打包
+npm run build
 ```
 
-## Debug
+### 直接下载
+我们已经准备好了打包后的硬盘版本/无需安装版本，可以直接下载使用。
 
-![electron-vite-react-debug.gif](https://github.com/electron-vite/electron-vite-react/blob/main/electron-vite-react-debug.gif?raw=true)
-
-## Directory
-
-```diff
-+ ├─┬ electron
-+ │ ├─┬ main
-+ │ │ └── index.ts    entry of Electron-Main
-+ │ └─┬ preload
-+ │   └── index.ts    entry of Preload-Scripts
-  ├─┬ src
-  │ └── main.ts       entry of Electron-Renderer
-  ├── index.html
-  ├── package.json
-  └── vite.config.ts
+### 项目结构
 ```
-
-<!--
-## Be aware
-
-🚨 By default, this template integrates Node.js in the Renderer process. If you don't need it, you just remove the option below. [Because it will modify the default config of Vite](https://github.com/electron-vite/vite-plugin-electron-renderer#config-presets-opinionated).
-
-```diff
-# vite.config.ts
-
-export default {
-  plugins: [
--   // Use Node.js API in the Renderer-process
--   renderer({
--     nodeIntegration: true,
--   }),
-  ],
-}
+.
+├── dist/                   # 编译后的文件
+├── public/                 # 静态资源
+├── src/                    # 源代码
+│   ├── assets/             # 静态资源
+│   ├── components/         # 组件
+│   ├── utils/              # 工具函数
+│   ├── App.vue             # 根组件，程序入口页面
+├── electron/               # electron 相关文件
+│   ├── main.js             # electron 主进程
+│   ├── preload.js          # electron 预加载脚本
+├── package.json            # 项目配置
+└── vite.config.js          # vite 配置
 ```
--->
-
-## FAQ
-
-- [C/C++ addons, Node.js modules - Pre-Bundling](https://github.com/electron-vite/vite-plugin-electron-renderer#dependency-pre-bundling)
-- [dependencies vs devDependencies](https://github.com/electron-vite/vite-plugin-electron-renderer#dependencies-vs-devdependencies)
