@@ -1,3 +1,8 @@
+<!--
+  Description: 程序入口页面
+  Last Edit Time: 2025-02-25
+  Last Editor: Su1furicAcid
+-->
 <template>
   <div class="container">
     <div v-if="showIntro" class="intro-screen">

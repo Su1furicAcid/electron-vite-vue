@@ -1,3 +1,8 @@
+<!--
+    Description: 用于展示最终结果的组件
+    Last Edit Time: 2025-02-25
+    Last Editor: Su1furicAcid
+-->
 <template>
     <div class="container" :style="{ background: themeConfig.background }">
         <!-- 添加今日日期的展示 -->
@@ -54,9 +59,11 @@ const daysToNextBirthday = ref<number>(0);
 const N = ref<string>('7');
 const nDaysBeforeNextBirthday = ref<string>('1990-01-01');
 const nextPlan = ref<string>('1990-01-01');
+
 // 获取今天日期
 const dateToday = ref(getToday());
 
+// 获取全部展示信息
 const fetchData = async () => {
     // 获取出生日期
     dateToday.value = await window.electronAPI.readData('dateToday') || getToday();

@@ -1,3 +1,8 @@
+<!--
+    Description: 用于修改用户配置的组件
+    Last Edit Time: 2025-02-25
+    Last Editor: Su1furicAcid
+-->
 <template>
     <div class="container">
         <div class="title">编辑信息</div>

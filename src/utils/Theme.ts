@@ -1,4 +1,6 @@
-// src/config/theme.ts
+/**
+ * @description 主题颜色配置文件
+ */
 export type ThemeType = "elegant" | "energetic" | "calm";
 
 export interface ThemeConfig {
