@@ -2,7 +2,13 @@
 
 ## 项目介绍
 
+### 项目概述
+
 生日聚会计划便签是一款基于 Electron + Vite + Vue3 开发的 Windows 桌面应用，辅助用户记录生日聚会计划，并提醒用户进行计划。项目使用 electron-vite-vue 模板进行开发。
+
+### 参考资料
+
+项目的构建基于 electron-vite-vue 模板（参考 https://github.com/electron-vite/electron-vite-vue）；UI 设计使用了 Lucide 图标库（参考 https://lucide.netlify.app/）；数据的持久化存储使用了 electron-store（参考 https://www.npmjs.com/package/electron-store）。
 
 ### 支持平台
 
