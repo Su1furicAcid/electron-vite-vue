@@ -33,7 +33,7 @@
 ### 本地编译
 ```sh
 # 把项目克隆到本地
-git clone https://github.com/electron-vite/electron-vite-vue.git
+git clone https://github.com/Su1furicAcid/electron-vite-vue
 
 # 安装依赖
 npm install
